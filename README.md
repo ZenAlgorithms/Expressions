@@ -5,7 +5,9 @@
 ```shell
 git clone git@github.com:ZenAlgorithms/Expressions.git
 cd Expressions
-cmake .
+mkdir build
+cd build
+cmake ..
 make
 make install
 ```
