@@ -1,4 +1,4 @@
-FROM iantorres/boosted:latest
+FROM iantorres/boosted:amd64-latest
 
 COPY . .
 
