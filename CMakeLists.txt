@@ -11,14 +11,42 @@ INCLUDE(FetchContent)
 INCLUDE_DIRECTORIES(lib/headers)
 
 FILE(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/lib/sources/*.cpp")
-file(GLOB_RECURSE TESTS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cc")
+FILE(GLOB_RECURSE TESTS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cc")
 
 ADD_LIBRARY(expressions STATIC ${SOURCES})
 
-TARGET_INCLUDE_DIRECTORIES(expressions PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/lib/headers)
+TARGET_INCLUDE_DIRECTORIES(expressions PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib/headers>
+        $<INSTALL_INTERFACE:include>
+)
 
-INSTALL(TARGETS expressions DESTINATION lib)
 INSTALL(DIRECTORY lib/headers/ DESTINATION include)
+
+INSTALL(TARGETS expressions
+        EXPORT ExpressionsTargets
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+)
+
+INSTALL(EXPORT ExpressionsTargets
+        FILE ExpressionsTargets.cmake
+        NAMESPACE expressions::
+        DESTINATION lib/cmake/Expressions
+)
+
+INCLUDE(CMakePackageConfigHelpers)
+CONFIGURE_PACKAGE_CONFIG_FILE(
+        cmake/ExpressionsConfig.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/ExpressionsConfig.cmake
+        INSTALL_DESTINATION lib/cmake/Expressions
+)
+
+INSTALL(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/ExpressionsConfig.cmake
+        DESTINATION lib/cmake/Expressions
+)
 
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 

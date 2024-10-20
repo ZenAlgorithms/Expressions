@@ -1,13 +1,15 @@
 #include <gtest/gtest.h>
-#include <expression.hpp>
+#include <expressions/container.hpp>
 
-TEST(Expression, Assertions) {
-    const auto _non_empty_expression = expression::from_string("/users/{user}/details");
+TEST(Expressions, Assertions) {
+    using namespace expressions;
+
+    const auto _non_empty_expression = container::from_string("/users/{user}/details");
     ASSERT_FALSE(_non_empty_expression->get_arguments().empty());
     ASSERT_EQ(_non_empty_expression->get_arguments().size(), 1);
     ASSERT_EQ(_non_empty_expression->get_arguments().at(0), "user");
 
-    const auto _empty_expression = expression::from_string("/ping");
+    const auto _empty_expression = container::from_string("/ping");
     ASSERT_TRUE(_empty_expression->get_arguments().empty());
     ASSERT_EQ(_empty_expression->get_regex(), "/ping");
 

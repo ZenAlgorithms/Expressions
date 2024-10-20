@@ -15,17 +15,19 @@ make install
 ## Usage
 
 ```c++
-#include <expression/expression.hpp>
+#include <expressions/container.hpp>
 
 using namespace std;
 
-auto it = expression::from_string("/api/servers/{server}/status");
+auto _container = expressions::container::from_string("/api/servers/{server}/status");
 
-auto result = it->query("/api/servers/production/status");
+auto _result = _container->query("/api/servers/production/status");
 
-cout << result->matches() << endl;
+cout << _result->matches() << endl;
 // 1
 
-cout << result->bindings()->at("server") << endl;
+cout << _result->bindings()->at("server") << endl;
 // production
 ```
+
+See more [examples](https://github.com/ZenAlgorithms/Expressions/blob/master/tests/implementation_test.cc) ...
