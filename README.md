@@ -1,7 +1,3 @@
-# Expressions
-
-## Usage
-
 ![Something to understand how works ...](about.png)
 
 See more [examples](https://github.com/ZenAlgorithms/Expressions/blob/master/tests/implementation_test.cc) ...
@@ -9,7 +5,7 @@ See more [examples](https://github.com/ZenAlgorithms/Expressions/blob/master/tes
 ## Build
 
 ```shell
-git clone git@github.com:ZenAlgorithms/Expressions.git
+git clone https://github.com/ZenAlgorithms/Expressions.git
 cd Expressions
 mkdir build
 cd build
