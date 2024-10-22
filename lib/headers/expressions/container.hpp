@@ -8,21 +8,9 @@
 #include <expressions/result.hpp>
 
 namespace expressions {
-    class container : public std::enable_shared_from_this<container> {
+    struct container {
         std::string regex_;
         std::vector<std::string> arguments_{};
-
-    public:
-        /**
-         * Expression constructor
-         *
-         * @param regex
-         * @param arguments
-         */
-        container(
-            std::string regex,
-            std::vector<std::string> arguments
-        );
 
         /**
          * Get the regex
@@ -46,8 +34,8 @@ namespace expressions {
          * @param input
          * @return
          */
-        std::shared_ptr<result>
-        query(const std::string &input);
+        result
+        query(const std::string &input) const;
 
         /**
          * Creates a expression from strings
@@ -55,7 +43,7 @@ namespace expressions {
          * @param input
          * @return std::shared_ptr<expression>
          */
-        static std::shared_ptr<container>
+        static container
         from_string(const std::string &input);
     };
 }

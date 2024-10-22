@@ -2,23 +2,12 @@
 
 #include <memory>
 #include <unordered_map>
+#include <optional>
 
 namespace expressions {
-    class result : public std::enable_shared_from_this<result> {
+    struct result {
         bool _matches = false;
         std::unordered_map<std::string, std::string> _bindings;
-
-    public:
-        /**
-         * Expression result constructor
-         *
-         * @param matches
-         * @param bindings
-         */
-        result(
-            bool matches,
-            std::unordered_map<std::string, std::string> bindings
-        );
 
         /**
          * Get matches
@@ -35,5 +24,14 @@ namespace expressions {
          */
         std::unordered_map<std::string, std::string>
         bindings() const;
+
+        /**
+         * Get parameter
+         *
+         * @param name
+         * @return
+         */
+        std::string
+        get(const std::string & name) const;
     };
 }
