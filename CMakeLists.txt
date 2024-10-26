@@ -13,16 +13,16 @@ INCLUDE_DIRECTORIES(lib/headers)
 FILE(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/lib/sources/*.cpp")
 FILE(GLOB_RECURSE TESTS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cc")
 
-ADD_LIBRARY(expressions STATIC ${SOURCES})
+ADD_LIBRARY(zen_algorithms_expressions STATIC ${SOURCES})
 
-TARGET_INCLUDE_DIRECTORIES(expressions PUBLIC
+TARGET_INCLUDE_DIRECTORIES(zen_algorithms_expressions PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib/headers>
         $<INSTALL_INTERFACE:include>
 )
 
 INSTALL(DIRECTORY lib/headers/ DESTINATION include)
 
-INSTALL(TARGETS expressions
+INSTALL(TARGETS zen_algorithms_expressions
         EXPORT ExpressionsTargets
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
@@ -32,21 +32,29 @@ INSTALL(TARGETS expressions
 
 INSTALL(EXPORT ExpressionsTargets
         FILE ExpressionsTargets.cmake
-        NAMESPACE expressions::
-        DESTINATION lib/cmake/Expressions
+        NAMESPACE zen_algorithms::
+        DESTINATION lib/cmake/ZenAlgorithms
 )
 
 INCLUDE(CMakePackageConfigHelpers)
 CONFIGURE_PACKAGE_CONFIG_FILE(
         cmake/ExpressionsConfig.cmake.in
         ${CMAKE_CURRENT_BINARY_DIR}/ExpressionsConfig.cmake
-        INSTALL_DESTINATION lib/cmake/Expressions
+        INSTALL_DESTINATION lib/cmake/ZenAlgorithms
 )
 
 INSTALL(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/ExpressionsConfig.cmake
-        DESTINATION lib/cmake/Expressions
+        DESTINATION lib/cmake/ZenAlgorithms
 )
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
@@ -59,7 +67,7 @@ if (BUILD_TESTS)
     FETCHCONTENT_MAKEAVAILABLE(googletest)
     ENABLE_TESTING()
     ADD_EXECUTABLE(tests ${TESTS} ${SOURCES})
-    TARGET_LINK_LIBRARIES(tests GTest::gtest_main)
+    TARGET_LINK_LIBRARIES(tests GTest::gtest_main zen_algorithms_expressions)
     INCLUDE(GoogleTest)
     GTEST_DISCOVER_TESTS(tests)
 endif()
